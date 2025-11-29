@@ -4,27 +4,35 @@ return {
   lazy = false,
   version = false,
   opts = {
-    -- Proveedor por defecto (puedes cambiarlo a "claude" o "gemini" si prefieres)
-    provider = "gemini", 
-    auto_suggestions_provider = "gemini",
+    -- Proveedor por defecto
+    provider = "copilot", 
+    auto_suggestions_provider = "copilot",
     
-    -- Configuración de Claude
-    claude = {
-      endpoint = "https://api.anthropic.com",
-      model = "claude-3-5-sonnet-20240620",
-      temperature = 0,
-      max_tokens = 4096,
-    },
-    
-    -- Configuración de Gemini
-    gemini = {
-      model = "gemini-1.5-flash-latest",
-      temperature = 0,
-      max_tokens = 4096,
+    -- Configuración de proveedores (NUEVA ESTRUCTURA)
+    providers = {
+      claude = {
+        endpoint = "https://api.anthropic.com",
+        model = "claude-3-5-sonnet-20240620",
+        timeout = 30000,
+        -- Parámetros específicos de la petición
+        extra_request_body = {
+          max_tokens = 4096,
+          temperature = 0,
+        },
+      },
+      gemini = {
+        model = "gemini-1.5-flash-latest",
+        timeout = 30000,
+        -- Parámetros específicos de la petición
+        extra_request_body = {
+          maxOutputTokens = 4096,
+          temperature = 0,
+        },
+      },
     },
 
     behaviour = {
-      auto_suggestions = false,
+      auto_suggestions = false, -- Lo tenías en true en tu último cambio
       auto_set_highlight_group = true,
       auto_set_keymaps = true,
       auto_apply_diff_after_generation = false,

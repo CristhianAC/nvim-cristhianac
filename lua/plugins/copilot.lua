@@ -1,4 +1,21 @@
 return {
+  -- Configuración explícita de Copilot para habilitar el Tab
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          keymap = {
+            accept = "<Tab>", -- Aceptar sugerencia con Tab
+          },
+        },
+      })
+    end,
+  },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     branch = "canary",
