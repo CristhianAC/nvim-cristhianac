@@ -1,7 +1,7 @@
 return {
   -- Configurar Kanagawa con transparencia
   { 
-    "rebelot/kanagawa.nvim",
+    "DonJulve/NeoCyberVim",
     opts = {
       transparent = true, -- <--- Aquí es donde debe ir
     },
@@ -11,7 +11,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "kanagawa",
+      colorscheme = "NeoCyberVim",
     },
   }
 }
