@@ -39,6 +39,7 @@ return {
             { icon = " ", key = "x", desc = "Trouble", action = ":Trouble diagnostics toggle" },
             { icon = " ", key = "t", desc = "Todo", action = ":TodoTrouble" },
             { icon = " ", key = "v", desc = "Vim Be Good", action = ":VimBeGood" },
+            { icon = "📓", key = "o", desc = "Obsidian", action = ":cd ~/Documents/NotasTrabajos | lua Snacks.dashboard.pick('files')" },
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
           },
         },
