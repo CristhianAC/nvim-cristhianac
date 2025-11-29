@@ -9,7 +9,7 @@ return {
         "stylua", -- Formateador para Lua
         "shfmt",  -- Formateador para Shell
         -- Añade aquí otros LSPs o herramientas que necesites
-        -- "lua-language-server",
+        "jdtls",
         -- "prettier",
       },
     },
