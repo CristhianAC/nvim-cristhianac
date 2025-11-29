@@ -1,0 +1,21 @@
+return {
+  {
+    "folke/snacks.nvim",
+    opts = {
+      dashboard = {
+        preset = {
+          -- Pega aquí tu arte ASCII.
+          -- Usa [[ ]] para cadenas de múltiples líneas.
+          header = [[
+    .       .
+    |\_---_/|
+   /   o_o   \
+  |    (_)    |
+   \  \___/  /
+    \_______/
+          ]],
+        },
+      },
+    },
+  },
+}
