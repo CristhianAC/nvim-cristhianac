@@ -1,16 +1,15 @@
 return {
   {
-    "echasnovski/mini.animate",
+    "nvim-mini/mini.animate",
     event = "VeryLazy",
     opts = function()
-      -- No animar si el scroll es muy grande (para evitar mareos)
       local animate = require("mini.animate")
       return {
         resize = {
-          timing = animate.gen_timing.linear({ duration = 50, unit = "total" }),
+          enable = false, -- Desactivar animación de redimensionado
         },
         scroll = {
-          timing = animate.gen_timing.linear({ duration = 150, unit = "total" }),
+          timing = animate.gen_timing.linear({ duration = 100, unit = "total" }), -- Scroll más rápido
           subscroll = animate.gen_subscroll.equal({
             predicate = function(total_scroll)
               if mouse_scrolled then
