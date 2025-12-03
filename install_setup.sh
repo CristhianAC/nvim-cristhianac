@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Colores para output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -7,8 +5,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # URL del repositorio de tu configuración de Neovim
-# IMPORTANTE: Cambia esto por la URL de tu repositorio git
-NVIM_CONFIG_REPO="https://github.com/tu-usuario/tu-repo-neovim.git"
+NVIM_CONFIG_REPO="https://github.com/CristhianAC/nvim-cristhianac.git"
 
 echo -e "${BLUE}Iniciando instalación automática...${NC}"
 
@@ -40,6 +37,13 @@ if [ "$OS" == "macos" ]; then
     if ! command -v brew &> /dev/null; then
         echo -e "${BLUE}Instalando Homebrew...${NC}"
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        
+        # Agregar Homebrew al PATH para esta sesión
+        if [ -f "/opt/homebrew/bin/brew" ]; then
+            eval "$(/opt/homebrew/bin/brew shellenv)"
+        elif [ -f "/usr/local/bin/brew" ]; then
+            eval "$(/usr/local/bin/brew shellenv)"
+        fi
     else
         echo -e "${GREEN}Homebrew ya está instalado.${NC}"
     fi
@@ -48,19 +52,23 @@ if [ "$OS" == "macos" ]; then
     brew update
 
     # Instalar Ghostty
-    # Nota: Ghostty puede requerir un tap específico o ser instalado vía cask si ya es público.
-    # Si falla, se sugiere revisar la web oficial.
     echo -e "${BLUE}Instalando Ghostty...${NC}"
-    if brew install --cask ghostty 2>/dev/null; then
+    # Eliminamos 2>/dev/null para ver errores si falla
+    if brew install --cask ghostty; then
          echo -e "${GREEN}Ghostty instalado correctamente.${NC}"
     else
-         echo -e "${RED}No se pudo instalar Ghostty automáticamente via brew cask.${NC}"
-         echo "Intentando instalar via source o comprueba https://ghostty.org/download"
+         echo -e "${RED}Fallo al instalar Ghostty via brew cask.${NC}"
+         echo "Es posible que necesites descargarlo manualmente de https://ghostty.org"
     fi
 
     # Instalar dependencias (Neovim, Zsh, Git, Ripgrep, etc)
     echo -e "${BLUE}Instalando Neovim, Zsh y herramientas...${NC}"
-    brew install neovim zsh git curl ripgrep fd lazygit
+    if brew install neovim zsh git curl ripgrep fd lazygit; then
+        echo -e "${GREEN}Herramientas instaladas correctamente.${NC}"
+    else
+        echo -e "${RED}Fallo al instalar herramientas.${NC}"
+        exit 1
+    fi
 
 # ==========================================
 # INSTALACIÓN EN LINUX
@@ -82,9 +90,7 @@ elif [ "$OS" == "linux" ]; then
 
         # Ghostty en Linux (puede variar)
         echo -e "${BLUE}Instalando Ghostty (instrucciones pueden variar)...${NC}"
-        # Aquí asumimos que existe un paquete o snap, si no, imprimimos instrucciones
         if command -v snap &> /dev/null; then
-             # Intento hipotético, ajustar según disponibilidad real
              sudo snap install ghostty --classic 2>/dev/null || echo -e "${RED}No se encontró paquete snap para Ghostty. Revisa https://ghostty.org${NC}"
         else
              echo -e "${RED}Por favor instala Ghostty manualmente desde https://ghostty.org${NC}"
@@ -93,7 +99,6 @@ elif [ "$OS" == "linux" ]; then
     elif [ -f /etc/arch-release ]; then
         echo -e "${BLUE}Detectado Arch Linux...${NC}"
         sudo pacman -Syu --noconfirm zsh neovim git curl ripgrep fd lazygit ghostty
-        # Ghostty suele estar en AUR o repos oficiales de Arch
     fi
 fi
 
@@ -129,14 +134,15 @@ fi
 
 # Clonar repositorio
 echo "Clonando tu configuración de Neovim..."
-if [ "$NVIM_CONFIG_REPO" != "https://github.com/CristhianAC/nvim-cristhianac.git" ]; then
-    git clone "$NVIM_CONFIG_REPO" "$NVIM_CONFIG_DIR"
-    echo -e "${GREEN}Configuración de Neovim instalada.${NC}"
+git clone "$NVIM_CONFIG_REPO" "$NVIM_CONFIG_DIR"
+
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}Configuración de Neovim instalada correctamente.${NC}"
 else
-    echo -e "${RED}IMPORTANTE: No has configurado la URL de tu repositorio en el script.${NC}"
-    echo "Se ha creado la carpeta vacía. Por favor clona tu repo manualmente en $NVIM_CONFIG_DIR"
-    mkdir -p "$NVIM_CONFIG_DIR"
+    echo -e "${RED}Fallo al clonar el repositorio.${NC}"
+    exit 1
 fi
 
 echo -e "${GREEN}¡Instalación completada!${NC}"
 echo "Reinicia tu terminal o abre Ghostty para ver los cambios."
+EOF
